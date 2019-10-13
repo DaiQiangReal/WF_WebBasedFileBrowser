@@ -7,7 +7,7 @@ Contact me |
 --------- |
 DaiQiang: daiqianghaha@foxmail.com | 
 
-一款美观易用性强快速部署的网页文件管理器，符合Google Material Design，采用Python语言 Django 框架编写。  
+一款易用性强快速部署美观的网页文件管理器，符合Google Material Design，采用Python语言 Django 框架编写。  
 A user-friendly install easily WebBased File Browser programed with Python Django with Material Design Interface.   
 ### [ English](../README.md) | 中文文档
 
