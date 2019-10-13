@@ -10,6 +10,16 @@ DaiQiang: daiqianghaha@foxmail.com |
 一款美观易用性强快速部署的网页文件管理器，符合Google Material Design，采用Python语言 Django 框架编写。  
 A user-friendly install easily WebBased File Browser programed with Python Django with Material Design Interface.   
 ### [ English](../README.md) | 中文文档
+
+# 优点
+
+* 快速配置，一键部署，立即启动项目，python解释运行无需编译
+* CSRF token 验证技术，防止跨站请求伪造（CSRF）攻击
+* 异步动态加载技术，可瞬间渲染上万文件
+* 文件预览功能 快速查看文本文件、项目代码和各种格式的图片文件
+* 多文件快速压缩打包下载
+* 可自定义背景图等风格  
+
 ## 登录界面
 ![login](./login.png "登录界面") 
 ## 文件预览
@@ -21,14 +31,6 @@ A user-friendly install easily WebBased File Browser programed with Python Djang
 ## 删除文件
 ![delete](./delete_EN.gif "删除文件")
 
-# 优点
-
-* 快速配置，一键部署，立即启动项目，python解释运行无需编译
-* CSRF token 验证技术，防止跨站请求伪造（CSRF）攻击
-* 异步动态加载技术，可瞬间渲染上万文件
-* 文件预览功能 快速查看文本文件、项目代码和各种格式的图片文件
-* 多文件快速压缩打包下载
-* 可自定义背景图等风格
 
 # 安装说明
 1. 下载项目所有文件
