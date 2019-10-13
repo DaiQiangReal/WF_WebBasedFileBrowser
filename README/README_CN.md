@@ -11,15 +11,15 @@ DaiQiang: daiqianghaha@foxmail.com |
 A user-friendly install easily WebBased File Browser programed with Python Django with Material Design Interface.   
 ### [ English](../README.md) | 中文文档
 ## 登录界面
-![login](./README/login.png "登录界面") 
+![login](./login.png "登录界面") 
 ## 文件预览
-![preview](./README/preview_EN.gif "文件预览")
+![preview](./preview_EN.gif "文件预览")
 ## 拖动快速移动复制文件
-![drag](./README/drag_EN.gif "拖动快速移动复制文件")
+![drag](./drag_EN.gif "拖动快速移动复制文件")
 ## 快速重命名
-![rename](./README/rename_EN.gif "快速重命名")
+![rename](./rename_EN.gif "快速重命名")
 ## 删除文件
-![delete](./README/delete_EN.gif "删除文件")
+![delete](./delete_EN.gif "删除文件")
 
 # 优点
 
