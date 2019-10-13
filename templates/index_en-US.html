@@ -1,0 +1,573 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WF_WebBasedFileBrowser</title>
+    <link rel="stylesheet" href="{% static "css/demo.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "css/metroStyle/metroStyle.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "css/mdui.css" %}" type="text/css">
+    <script type="text/javascript" src="{% static "js/jquery-1.4.4.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/mdui.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.ztree.core.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.ztree.excheck.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.ztree.exedit.js" %}"></script>
+
+    <style>
+        ul.ztree {
+            margin-top: 10px;
+            border: 1px solid #617775;
+            background: #f0f6e4;
+            width: 450px;
+            height: 800px;
+            overflow-y: scroll;
+            overflow-x: auto;
+        }
+
+        div.zTreeDemoBackground {
+            width: 300px;
+            height: 800px;
+            text-align: left;
+        }
+    </style>
+    <SCRIPT type="text/javascript">
+        var setting = {
+            async: {
+                enable: true,
+                url: "./getDirContent",
+                contentType: "application/x-www-form-urlencoded",
+                headers: {"X-CSRFToken": "{{ csrf_token }}"},
+                autoParam: ["path"],
+            },
+            check: {
+                enable: true
+            },
+            edit: {
+                enable: true,
+                showRemoveBtn: false,
+                drag: {
+                    isCopy: true,
+                    isMove: false
+                }
+
+            },
+            data: {
+                key: {
+                    title: "t"
+                },
+
+            },
+            callback: {
+                onClick: onClick,
+                onCheck: onCheck,
+                beforeRename: beforeRename,
+                onRename: onRename,
+                beforeDrag: beforeDrag,
+                beforeDrop: beforeDrop,
+                onDrop: onDrop,
+            }
+        };
+
+        function beforeDrag(treeId, treeNodes) {
+
+        }
+
+        function beforeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
+            needCopyFileList = [];
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            for (var j = 0, l1 = treeNodes.length; j < l1; j++) {
+                zTree.checkNode(treeNodes[j], true, true)
+            }
+            var nodes = zTree.getCheckedNodes(true);
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                needCopyFileList.push(nodes[i].path)
+            }
+
+            const xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "./copyFiles", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    const backJsonStr = xmlhttp.responseText;
+                    const backJson = JSON.parse(backJsonStr);
+                }
+            };
+            xmlhttp.send("needCopyFileList=" + needCopyFileList + "&" + "targetPath=" + targetNode.path);
+            return true
+        }
+
+        function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
+
+        }
+
+        function setCheck() {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                checktype = {"Y": "s", "N": "s"};
+            zTree.setting.check.chkboxType = checktype;
+
+        }
+
+        function beforeRename(treeId, treeNode, newName, isCancel) {
+            if (newName.length == 0) {
+                setTimeout(function () {
+                    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                    zTree.cancelEditName();
+                    alert("New filename can't be empty!");
+                }, 0);
+                return false;
+            }
+            const xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "./renameFiles", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    const backJsonStr = xmlhttp.responseText;
+                    const backJson = JSON.parse(backJsonStr);
+                }
+            };
+            xmlhttp.send("originPath=" + treeNode.path + "&" + "newName=" + newName);
+
+            return true;
+        }
+
+        function onRename(e, treeId, treeNode, isCancel) {
+
+        }
+
+        function onClick(event, treeId, treeNode, clickFlag) {
+            var pathInput = document.getElementById("pathInput");
+            pathInput.value = treeNode.path;
+            checkbox = document.getElementById("needPreview");
+            if (checkbox.checked)
+                preview(treeNode.path);
+            mdui.updateTextFields();
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = zTree.getSelectedNodes();
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                zTree.checkNode(nodes[i], true, true);
+            }
+
+        }
+
+
+        function onCheck(e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = zTree.getCheckedNodes(true);
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                zTree.selectNode(nodes[i], true);
+            }
+
+        }
+
+        var Node ={{dataJson|safe}};
+
+        $(document).ready(function () {
+            $.fn.zTree.init($("#treeDemo"), setting, Node);
+            setCheck();
+        });
+    </SCRIPT>
+
+    <script type="application/javascript">
+        function downloadFiles() {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            checkCount = zTree.getCheckedNodes(true);
+            downloadFileList = [];
+            for (var i = 0, l = checkCount.length; i < l; i++) {
+                downloadFileList.push(checkCount[i].path);
+            }
+            const xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "./downloadFiles", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.responseType = "blob";
+            xmlhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xmlhttp.onload = function (oEvent) {
+                let content = xmlhttp.response;
+                let elink = document.createElement("a");
+                filename = xmlhttp.getResponseHeader("filename");
+                filename = decodeURI(filename);
+                elink.download = filename;
+                elink.style.display = "none";
+                let blob = new Blob([content]);
+                elink.href = URL.createObjectURL(blob);
+                document.body.appendChild(elink);
+                elink.click();
+                document.body.removeChild(elink);
+            };
+
+            xmlhttp.send("downloadFileList=" + downloadFileList);
+
+        }
+
+        function deleteFiles() {
+            mdui.dialog({
+                title: 'Are you sure？',
+                content: "Once deleted, you can never recover it, are your sure to delete these files？",
+                buttons: [
+                    {
+                        text: 'CANCEL',
+                    },
+                    {
+                        text: 'Confirm',
+                        onClick: function (inst) {
+                            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                            checkCount = zTree.getCheckedNodes(true);
+                            deleteFileList = [];
+                            for (var i = 0, l = checkCount.length; i < l; i++) {
+                                deleteFileList.push(checkCount[i].path);
+                                zTree.removeNode(checkCount[i]);
+                            }
+                            const xmlhttp = new XMLHttpRequest();
+                            xmlhttp.open("POST", "./deleteFiles", true);
+                            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            xmlhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                            xmlhttp.onreadystatechange = function () {
+                                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                                    const backJsonStr = xmlhttp.responseText;
+                                    const backJson = JSON.parse(backJsonStr);
+                                }
+                            };
+                            xmlhttp.send("deleteList=" + deleteFileList);
+
+                        }
+                    },
+
+                ]
+            })
+        }
+
+
+    </script>
+    <script>
+
+        function checkboxOnclick(checkbox) {
+            if (checkbox.checked) {
+
+                document.getElementById("tagMove").innerHTML = "Drag to move files";
+            } else {
+                document.getElementById("tagMove").innerHTML = "Drag to copy files ";
+            }
+            var setting = {
+                async: {
+                    enable: true,
+                    url: "./getDirContent",
+                    contentType: "application/x-www-form-urlencoded",
+                    headers: {"X-CSRFToken": "{{ csrf_token }}"},
+                    autoParam: ["path"],
+                },
+                check: {
+                    enable: true
+                },
+                edit: {
+                    enable: true,
+                    showRemoveBtn: false,
+                    drag: {
+                        isCopy: !checkbox.checked,
+                        isMove: checkbox.checked
+                    }
+
+                },
+                data: {
+                    key: {
+                        title: "t"
+                    },
+
+                },
+                callback: {
+                    onClick: onClick,
+                    onCheck: onCheck,
+                    beforeRename: beforeRename,
+                    onRename: onRename,
+                    beforeDrag: beforeDrag,
+                    beforeDrop: beforeDrop,
+                    onDrop: onDrop,
+                }
+            };
+
+            function beforeDrag(treeId, treeNodes) {
+
+            }
+
+            function beforeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
+                needCopyFileList = [];
+                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                for (var j = 0, l1 = treeNodes.length; j < l1; j++) {
+                    zTree.checkNode(treeNodes[j], true, true)
+                }
+                var nodes = zTree.getCheckedNodes(true);
+                for (var i = 0, l = nodes.length; i < l; i++) {
+                    needCopyFileList.push(nodes[i].path)
+                }
+
+                const xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("POST", "./copyFiles", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        const backJsonStr = xmlhttp.responseText;
+                        const backJson = JSON.parse(backJsonStr);
+                    }
+                };
+                xmlhttp.send("needCopyFileList=" + needCopyFileList + "&" + "targetPath=" + targetNode.path + "&" + "isMove=" + checkbox.checked);
+                return true
+            }
+
+            function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
+
+            }
+
+            function setCheck() {
+                var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                    checktype = {"Y": "s", "N": "s"};
+                zTree.setting.check.chkboxType = checktype;
+
+            }
+
+            function beforeRename(treeId, treeNode, newName, isCancel) {
+                if (newName.length == 0) {
+                    setTimeout(function () {
+                        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                        zTree.cancelEditName();
+                        mdui.alert("New name can't be empty!");
+                    }, 0);
+                    return false;
+                }
+                const xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("POST", "./renameFiles", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        const backJsonStr = xmlhttp.responseText;
+                        const backJson = JSON.parse(backJsonStr);
+                    }
+                };
+                xmlhttp.send("originPath=" + treeNode.path + "&" + "newName=" + newName);
+
+                return true;
+            }
+
+            function onRename(e, treeId, treeNode, isCancel) {
+
+            }
+
+            function onClick(event, treeId, treeNode, clickFlag) {
+                var pathInput = document.getElementById("pathInput");
+                pathInput.value = treeNode.path;
+                checkbox = document.getElementById("needPreview");
+                if (checkbox.checked)
+                    preview(treeNode.path);
+                mdui.updateTextFields();
+                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                var nodes = zTree.getSelectedNodes();
+                for (var i = 0, l = nodes.length; i < l; i++) {
+                    zTree.checkNode(nodes[i], true, true);
+                }
+
+            }
+
+
+            function onCheck(e, treeId, treeNode) {
+                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                var nodes = zTree.getCheckedNodes(true);
+                for (var i = 0, l = nodes.length; i < l; i++) {
+                    zTree.selectNode(nodes[i], true);
+                }
+
+            }
+
+            var Node ={{dataJson|safe}};
+
+            $(document).ready(function () {
+                $.fn.zTree.init($("#treeDemo"), setting, Node);
+                setCheck();
+            });
+        }
+
+    </script>
+    <script>
+        function preview(path) {
+            const xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "./previewFiles", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    backJsonStr = xmlhttp.responseText;
+                    backJson = JSON.parse(backJsonStr);
+                    if (backJson['type'] === "img") {
+                        previewDiv = document.getElementById("preview");
+                        previewDiv.innerHTML = "";
+                        var img = new Image();
+                        img.src = backJson['file'];
+                        img.style.width = 'auto';
+                        img.style.height = 'auto';
+                        img.style.maxWidth = '100%';
+                        img.style.maxHeight = '100%';
+
+                        previewDiv.appendChild(img);
+                    }
+                    if (backJson['type'] === "text") {
+                        previewDiv = document.getElementById("preview");
+                        previewDiv.innerHTML = "";
+                        div = document.createElement("div");
+                        div.classList.add("mdui-textfield");
+
+                        label = document.createElement("label");
+                        label.classList.add("mdui-textfield-label");
+                        label.innerText = "Text in file";
+
+                        textarea = document.createElement("textarea");
+                        textarea.classList.add("mdui-textfield-input");
+                        textarea.setAttribute('type', 'text');
+                        textarea.value = backJson["file"];
+
+                        div.appendChild(label);
+                        div.appendChild(textarea);
+
+                        previewDiv.appendChild(div);
+                        mdui.mutation(div);
+                        mdui.updateTextFields(textarea);
+                    }
+                    if (backJson['type'] === "error")
+                        mdui.alert(backJson["file"], 'Error');
+
+                }
+            };
+            xmlhttp.send("path=" + path);
+
+        }
+
+        //file is input[type=file] ，example：onchange="uploadFile(this);"
+        function encodeUnicode(str) {
+            var res = [];
+            for (var i = 0; i < str.length; i++) {
+                res[i] = ("00" + str.charCodeAt(i).toString(16)).slice(-4);
+            }
+            return "\\u" + res.join("\\u");
+        }
+
+        function mkdir() {
+            path = document.getElementById("pathInput").value;
+            const xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "./mkdir", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    const backJsonStr = xmlhttp.responseText;
+                    const backJson = JSON.parse(backJsonStr);
+                }
+            };
+            xmlhttp.send("path=" + path);
+            location.reload();
+        }
+
+        function uploadFile(file) {
+            if (file && file.files && file.files.length > 0) {
+
+                var fd = new FormData();
+                for (var i = 0; i < file.files.length; i++)
+                    fd.append('file[' + i + ']', file.files[i]);
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        if (data["ok"] == true) {
+                            mdui.snackbar({message: 'Upload Complete', position: 'top'});
+                        } else mdui.alert(data["ok"], 'Upload Failed');
+                    }
+                };
+
+                //process bar
+                xhr.upload.onprogress = function (evt) {
+                    var loaded = evt.loaded;
+                    var tot = evt.total;//total
+                    var per = Math.floor(100 * loaded / tot);
+                    var UploadProgressBar = document.getElementById("UploadProgressBar");
+                    UploadProgressBar.style.width = per + "%";
+                };
+                path = encodeUnicode(document.getElementById("pathInput").value);
+                xhr.open("post", './uploadFiles', true);
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                xhr.setRequestHeader("path", path);
+                xhr.send(fd);
+            }
+        }
+    </script>
+</head>
+
+
+<body class="mdui-theme-primary-pink">
+<div class="mdui-container-fluid">
+    <div class="mdui-row">
+
+        <div class="mdui-col-md-4">
+
+            <div class="zTreeDemoBackground ">
+                <ul id="treeDemo" class="ztree"></ul>
+            </div>
+
+
+        </div>
+        <div class="mdui-col-md-7">
+            <div class="mdui-row">
+                <div class="mdui-progress">
+                    <div class="mdui-progress-determinate" id="UploadProgressBar" style="width: 0%;"></div>
+                </div>
+                <div class="mdui-card mdui-ripple mdui-hoverable" style="background:rgba(249,249,249,1)">
+                    <div class="mdui-card-content">
+                        <div class="mdui-textfield mdui-textfield-floating-label mdui-textfield-not-empty">
+                            <i class="mdui-icon material-icons">&#xe24d;</i>
+                            <label class="mdui-textfield-label">Path</label>
+                            <textarea class="mdui-textfield-input" id="pathInput"></textarea>
+                        </div>
+                        <label class="mdui-switch" style="margin: 3px">
+                            <div id="tagMove" style="float:left;margin-right: 5px">Drag to copy files</div>
+                            <input type="checkbox" id='isCopy' onclick='checkboxOnclick(this)'/>
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+                        <label class="mdui-switch" style="margin: 3px">
+                            <div style="float:left;margin-right: 5px">Preview</div>
+                            <input type="checkbox" id="needPreview"/>
+                            <i class="mdui-switch-icon"></i>
+                        </label>
+
+
+                        <button style="margin: 5px"
+                                class="mdui-btn mdui-btn-raised mdui-ripple  mdui-color-theme mdui-float-right"
+                                onclick=deleteFiles()>Delete
+                        </button>
+                        <input type="file" id='upload' name="upload" multiple="multiple " onchange="uploadFile(this);"
+                               style="display:none;"/>
+
+                        <button style="margin: 5px"
+                                class="mdui-btn mdui-btn-raised mdui-ripple  mdui-color-yellow mdui-float-right"
+                                onclick=mkdir()>New Folder
+                        </button>
+                        <button style="margin: 5px" id='uploadbtn'
+                                class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue mdui-float-right"
+                                onclick="document.getElementById('upload').click();">Upload Files
+                        </button>
+                        <button style="margin: 5px"
+                                class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-teal mdui-float-right"
+                                onclick=downloadFiles()>Downlaod
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="mdui-row">
+                <div class="mdui-card mdui-ripple mdui-hoverable" style="background:rgba(249,249,249,1)">
+                    <div class="mdui-card-content">
+                        <div id="preview" style="border:5px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>

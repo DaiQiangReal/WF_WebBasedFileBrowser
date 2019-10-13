@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static "css/mdui.css" %}" type="text/css">
+    <script type="text/javascript" src="{% static "js/mdui.js" %}"></script>
+    <script>
+        function uploadForm() {
+            username=document.getElementById("username").value;
+            password=document.getElementById("password").value;
+            en=document.getElementById("en").checked;
+            cn=document.getElementById("cn").checked;
+            if(en===true)
+                language="en";
+            if(cn===true)
+                language="cn";
+            const xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("POST", "./checkPassword", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        const backJsonStr = xmlhttp.responseText;
+                        const backJson = JSON.parse(backJsonStr);
+                        window.location.href=backJson['ok']
+                    }
+                };
+                xmlhttp.send("username=" + username+ "&" + "password=" + password+"&"+"language="+language);
+
+        }
+    </script>
+    <script>
+        function forgotPassword() {
+            mdui.alert("please check userdata.conf\n请检查 userdata.conf 文件");
+        }
+    </script>
+
+</head>
+<body class="mdui-theme-primary-pink"
+      style=" background-image:url({% static "background.jpg" %});background-size:100%;">
+<div class="mdui-container-fluid">
+    <div class="mdui-row">
+        <div class="mdui-col-sm-3"></div>
+        <div class="mdui-col-sm-6" style="background:rgba(255,255,255,0.3)">
+            <div class="mdui-card" style="background:rgba(255,255,255,0.3)">
+
+                <!-- 卡片头部，包含头像、标题、副标题 -->
+                <div class="mdui-card-header">
+                    <h1>Login</h1>
+
+                </div>
+
+                <!-- 卡片的内容 -->
+                <div class="mdui-card-content">
+
+                    <form id="form" action="./checkPassword" method="post">
+                        <div class="mdui-textfield mdui-textfield-floating-label">
+                            <label class="mdui-textfield-label">User name</label>
+                            <input class="mdui-textfield-input" type="text" required id="username" name="username"/>
+                            <div class="mdui-textfield-error">User name cannot be empty
+                                用户名不能为空</div>
+                        </div>
+
+                        <div class="mdui-textfield mdui-textfield-floating-label">
+                            <label class="mdui-textfield-label">Password</label>
+                            <input class="mdui-textfield-input" type="text"
+                                   pattern="^.*(?=.{6,})(?=.*[a-z])(?=.*[A-Z]).*$"
+                                   required id="password" name="password"/>
+                            <div class="mdui-textfield-error">Password needs at least 6 digits and containing upper and lower case
+                             密码至少 6 位，且包含大小写字母</div>
+                            <div class="mdui-textfield-helper">Enter a password with at least 6 digits with upper and lower case letters
+                           请输入至少 6 位，且包含大小写字母的密码</div>
+                        </div>
+                        <label class="mdui-radio" >
+                            <input type="radio" name="language" id="en" checked/>
+                            <i class="mdui-radio-icon"></i>English
+                        </label>
+                        <label class="mdui-radio" style="margin-left: 10px">
+                            <input type="radio" name="language" id="cn"/>
+                            <i class="mdui-radio-icon"></i>中文
+                        </label>
+
+
+                    </form>
+                </div>
+                <div class="mdui-card-actions">
+                    <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-theme"
+                            onclick="uploadForm()">Login
+                    </button>
+                    <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-theme" onclick="forgotPassword()">
+                        Forgot Password
+                    </button>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        <div class="mdui-col-sm-3"></div>
+    </div>
+    <div class="mdui-row">
+        <div class="mdui-col-sm-12 " style="text-align:center;position:absolute;bottom:0;">
+            <div class="mdui-center mdui-typo-display-2-opacity">WF FileBrowser</div>
+        </div>
+
+</div>
+
+</div>
+
+
+</body>
+</html>
