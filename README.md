@@ -4,7 +4,7 @@
 ![build](https://img.shields.io/badge/build-passed-green.svg)
 ![FrameWork](https://img.shields.io/badge/Django-2.0+-green.svg)   
 A user-friendly install easily WebBased File Browser programed with Python Django with Material Design Interface.   
-English | [中文文档](./README/README_CN.md)
+## English | [中文文档](./README/README_CN.md)
 --------
 
 Contact me | 
@@ -15,11 +15,14 @@ DaiQiang: daiqianghaha@foxmail.com |
 ## Login
 ![login](./README/login.png "Login") 
 ## File Preview
-![preview](./README/login.png "File Preview")
+![preview](./README/preview_EN.gif "File Preview")
 ## Drag to move or copy files
-![drag](./README/login.png "Drag to move or copy files")
+![drag](./README/drag_EN.gif "Drag to move or copy files")
 ## Quickly rename files
-![rename](./README/login.png "quickly rename")
+![rename](./README/rename_EN "quickly rename")
+## Delete files
+![delete](./README/delete_EN "Delete files")
+
 
 
 # Advantage
