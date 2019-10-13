@@ -8,25 +8,25 @@
     <script type="text/javascript" src="{% static "js/mdui.js" %}"></script>
     <script>
         function uploadForm() {
-            username=document.getElementById("username").value;
-            password=document.getElementById("password").value;
-            en=document.getElementById("en").checked;
-            cn=document.getElementById("cn").checked;
-            if(en===true)
-                language="en";
-            if(cn===true)
-                language="cn";
+            username = document.getElementById("username").value;
+            password = document.getElementById("password").value;
+            en = document.getElementById("en").checked;
+            cn = document.getElementById("cn").checked;
+            if (en === true)
+                language = "en";
+            if (cn === true)
+                language = "cn";
             const xmlhttp = new XMLHttpRequest();
-                xmlhttp.open("POST", "./checkPassword", true);
-                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xmlhttp.onreadystatechange = function () {
-                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                        const backJsonStr = xmlhttp.responseText;
-                        const backJson = JSON.parse(backJsonStr);
-                        window.location.href=backJson['ok']
-                    }
-                };
-                xmlhttp.send("username=" + username+ "&" + "password=" + password+"&"+"language="+language);
+            xmlhttp.open("POST", "./checkPassword", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    const backJsonStr = xmlhttp.responseText;
+                    const backJson = JSON.parse(backJsonStr);
+                    window.location.href = backJson['ok']
+                }
+            };
+            xmlhttp.send("username=" + username + "&" + "password=" + password + "&" + "language=" + language);
 
         }
     </script>
@@ -41,9 +41,9 @@
       style=" background-image:url({% static "background.jpg" %});background-size:100%;">
 <div class="mdui-container-fluid">
     <div class="mdui-row">
-        <div class="mdui-col-sm-3"></div>
-        <div class="mdui-col-sm-6" style="background:rgba(255,255,255,0.3)">
-            <div class="mdui-card" style="background:rgba(255,255,255,0.3)">
+        <div class="mdui-col-sm-4"></div>
+        <div class="mdui-col-sm-4" style="background:rgba(255,255,255,0.3)">
+            <div class="mdui-card mdui-hoverable" style="background:rgba(255,255,255,0.3)">
 
                 <!-- 卡片头部，包含头像、标题、副标题 -->
                 <div class="mdui-card-header">
@@ -52,27 +52,36 @@
                 </div>
 
                 <!-- 卡片的内容 -->
-                <div class="mdui-card-content">
+                <div class="mdui-card-content ">
 
                     <form id="form" action="./checkPassword" method="post">
                         <div class="mdui-textfield mdui-textfield-floating-label">
+                            <i class="mdui-icon material-icons">&#xe851;</i>
                             <label class="mdui-textfield-label">User name</label>
+
                             <input class="mdui-textfield-input" type="text" required id="username" name="username"/>
                             <div class="mdui-textfield-error">User name cannot be empty
-                                用户名不能为空</div>
+                                用户名不能为空
+                            </div>
                         </div>
 
                         <div class="mdui-textfield mdui-textfield-floating-label">
+
+                            <i class="mdui-icon material-icons">&#xe0da;</i>
                             <label class="mdui-textfield-label">Password</label>
                             <input class="mdui-textfield-input" type="text"
                                    pattern="^.*(?=.{6,})(?=.*[a-z])(?=.*[A-Z]).*$"
                                    required id="password" name="password"/>
-                            <div class="mdui-textfield-error">Password needs at least 6 digits and containing upper and lower case
-                             密码至少 6 位，且包含大小写字母</div>
-                            <div class="mdui-textfield-helper">Enter a password with at least 6 digits with upper and lower case letters
-                           请输入至少 6 位，且包含大小写字母的密码</div>
+                            <div class="mdui-textfield-error">Password needs at least 6 digits and containing upper and
+                                lower case
+                                密码至少 6 位，且包含大小写字母
+                            </div>
+                            <div class="mdui-textfield-helper">Enter a password with at least 6 digits with upper and
+                                lower case letters
+                                请输入至少 6 位，且包含大小写字母的密码
+                            </div>
                         </div>
-                        <label class="mdui-radio" >
+                        <label class="mdui-radio">
                             <input type="radio" name="language" id="en" checked/>
                             <i class="mdui-radio-icon"></i>English
                         </label>
@@ -85,7 +94,8 @@
                     </form>
                 </div>
                 <div class="mdui-card-actions">
-                    <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-theme"
+
+                    <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-teal"
                             onclick="uploadForm()">Login
                     </button>
                     <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-theme" onclick="forgotPassword()">
@@ -103,7 +113,7 @@
             <div class="mdui-center mdui-typo-display-2-opacity">WF FileBrowser</div>
         </div>
 
-</div>
+    </div>
 
 </div>
 
