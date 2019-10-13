@@ -12,6 +12,13 @@ Contact me |
 --------- |
 DaiQiang: daiqianghaha@foxmail.com | 
 
+# Advantage
+* Quick configuration, one-click deployment, start the project immediately, python interpret runs without compiling.
+* CSRF token authentication technology to prevent cross-site request forgery (CSRF) attacks.
+* Asynchronous dynamic loading technology, can instantly render tens of thousands of files.
+* File preview function Quickly view text files, project codes, and image files in various formats.
+* Multi-file fast compression to zip for downloading.
+* Customizable background image and other styles you love.  
 
 ## Login
 ![login](./README/login.png "Login") 
@@ -25,14 +32,6 @@ DaiQiang: daiqianghaha@foxmail.com |
 ![delete](./README/delete_EN.gif "Delete files")
 
 
-
-# Advantage
-* Quick configuration, one-click deployment, start the project immediately, python interpret runs without compiling.
-* CSRF token authentication technology to prevent cross-site request forgery (CSRF) attacks.
-* Asynchronous dynamic loading technology, can instantly render tens of thousands of files.
-* File preview function Quickly view text files, project codes, and image files in various formats.
-* Multi-file fast compression to zip for downloading.
-* Customizable background image and other styles you love.
 
 # Installation Guide
 1. Download all files of the project
