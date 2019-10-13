@@ -4,7 +4,7 @@
 ![build](https://img.shields.io/badge/build-passed-green.svg)
 ![FrameWork](https://img.shields.io/badge/Django-2.0+-green.svg)   
 A user-friendly install easily WebBased File Browser programed with Python Django with Material Design Interface.  
-一款美观易用性强快速部署的网页文件管理器，符合Google Material Design，采用Python语言 Django 框架编写。  
+一款易用性强快速部署美观的网页文件管理器，符合Google Material Design，采用Python语言 Django 框架编写。  
 ## English | [中文文档](./README/README_CN.md)
 --------
 
