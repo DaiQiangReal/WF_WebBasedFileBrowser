@@ -23,13 +23,13 @@ A user-friendly install easily WebBased File Browser programed with Python Djang
 ## 登录界面
 ![login](./login.png "登录界面") 
 ## 文件预览
-![preview](./preview_EN.gif "文件预览")
+![preview](./preview_CN.gif "文件预览")
 ## 拖动快速移动复制文件
-![drag](./drag_EN.gif "拖动快速移动复制文件")
+![drag](./drag_CN.gif "拖动快速移动复制文件")
 ## 快速重命名
-![rename](./rename_EN.gif "快速重命名")
+![rename](./rename_CN.gif "快速重命名")
 ## 删除文件
-![delete](./delete_EN.gif "删除文件")
+![delete](./delete_CN.gif "删除文件")
 
 
 # 安装说明
