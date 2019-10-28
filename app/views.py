@@ -135,6 +135,7 @@ def copyFiles(req):
 @needUserCookies
 def downloadFiles(req):
     downloadFileList = req.POST.get("downloadFileList").split(",")
+    print(downloadFileList)
     fileOperator = Utils.fileOperator()
     return fileOperator.zipFilesInResponse(downloadFileList)
 

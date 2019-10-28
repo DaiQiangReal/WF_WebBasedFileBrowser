@@ -89,7 +89,6 @@ class fileOperator:
                 response['content-type'] = "application/octet-stream"
                 response['Content-Disposition'] = 'attachment;'
                 response['filename'] = escape_uri_path((os.path.basename(needZipFileList[0])))
-
                 return response
             except Exception:
                 raise Http404
@@ -105,9 +104,10 @@ class fileOperator:
                         print(filenames)
                         for filename in filenames:
                             okList.append(os.path.join(path, filename))
-
                             zipFile.write(os.path.join(path, filename), os.path.join(fpath, filename))
-
+                else:
+                    okList.append(file)
+                    zipFile.write(file,os.path.basename(file))
             # for file in needZipFileList:
             #     if os.path.isfile(file) and (file not in okList):
             #         zipFile.write(file,os.path.basename(file))
@@ -118,6 +118,7 @@ class fileOperator:
             response['content-type'] = "application/octet-stream"
             response['Content-Disposition'] = 'attachment;'
             response['filename'] = "download.zip"
+            os.remove("temp.zip")
             return response
             # except Exception:
             #     raise Http404
