@@ -45,6 +45,6 @@ Modify  `rootpath.conf` configuration in the app directory to configure your pat
 4. Run command in shell(Linux) cmd or powershell(windows) to start the server
 `python3 manage.py runserver 0.0.0.0:5210`
 
-0.0.0.0 and 5210 can be replaced with custom IPs and ports when you needed
+0.0.0.0 and 5210 can be replaced with custom IPs and ports.
 
-5. Web Browser access to 0.0.0.0:5201 to manage files
+5. Use Web Browser access to 0.0.0.0:5201 to manage files.
