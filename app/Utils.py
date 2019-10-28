@@ -101,13 +101,15 @@ class fileOperator:
                     for path, dirnames, filenames in os.walk(file):
                         # 去掉目标跟路径，只对目标文件夹下边的文件及文件夹进行压缩
                         fpath = path.replace(file, '')
-                        print(filenames)
                         for filename in filenames:
-                            okList.append(os.path.join(path, filename))
-                            zipFile.write(os.path.join(path, filename), os.path.join(fpath, filename))
+                            print("pricessing "+os.path.join(path, filename))
+                            if not os.path.join(path, filename) in okList:
+                                okList.append(os.path.join(path, filename))
+                                zipFile.write(os.path.join(path, filename), os.path.join(fpath, filename))
                 else:
-                    okList.append(file)
-                    zipFile.write(file,os.path.basename(file))
+                    if not file in okList:
+                        okList.append(file)
+                        zipFile.write(file,os.path.basename(file))
             # for file in needZipFileList:
             #     if os.path.isfile(file) and (file not in okList):
             #         zipFile.write(file,os.path.basename(file))
