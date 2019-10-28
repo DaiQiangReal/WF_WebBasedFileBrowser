@@ -83,7 +83,7 @@ class fileOperator:
         return True
 
     def zipFilesInResponse(self, needZipFileList):
-        if len(needZipFileList) == 1:
+        if len(needZipFileList) == 1 and not os.path.isdir(needZipFileList[0]):
             try:
                 response = FileResponse(open(needZipFileList[0], 'rb'))
                 response['content-type'] = "application/octet-stream"
