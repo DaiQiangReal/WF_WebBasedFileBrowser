@@ -3,24 +3,14 @@
 ![python](https://img.shields.io/badge/Python-3.5+-green.svg)
 ![build](https://img.shields.io/badge/build-passed-green.svg)
 ![FrameWork](https://img.shields.io/badge/Django-2.0+-green.svg)   
-A user-friendly install easily WebBased File Browser programed with Python Django with Material Design Interface.   
-English | [中文文档](./README/README_CN.md)
+A user-friendly install easily WebBased File Browser programed with Python Django with Material Design Interface.  
+一款易用性强快速部署美观的网页文件管理器，符合Google Material Design，采用Python语言 Django 框架编写。  
+## English | [中文文档](./README/README_CN.md)
 --------
 
 Contact me | 
 --------- |
 DaiQiang: daiqianghaha@foxmail.com | 
-
-
-## Login
-![login](./README/login.png "Login") 
-## File Preview
-![preview](./README/login.png "File Preview")
-## Drag to move or copy files
-![drag](./README/login.png "Drag to move or copy files")
-## Quickly rename files
-![rename](./README/login.png "quickly rename")
-
 
 # Advantage
 * Quick configuration, one-click deployment, start the project immediately, python interpret runs without compiling.
@@ -28,7 +18,20 @@ DaiQiang: daiqianghaha@foxmail.com |
 * Asynchronous dynamic loading technology, can instantly render tens of thousands of files.
 * File preview function Quickly view text files, project codes, and image files in various formats.
 * Multi-file fast compression to zip for downloading.
-* Customizable background image and other styles you love.
+* Customizable background image and other styles you love.  
+
+## Login
+![login](./README/login.png "Login") 
+## File Preview
+![preview](./README/preview_EN.gif "File Preview")
+## Drag to move or copy files
+![drag](./README/drag_EN.gif "Drag to move or copy files")
+## Quickly rename files
+![rename](./README/rename_EN.gif "quickly rename")
+## Delete files
+![delete](./README/delete_EN.gif "Delete files")
+
+
 
 # Installation Guide
 1. Download all files of the project
