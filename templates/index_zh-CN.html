@@ -464,7 +464,15 @@
                 }
             };
             xmlhttp.send("path=" + path);
+            sleep(1000);
             location.reload();
+        }
+
+        function sleep(delay) {
+            var start = (new Date()).getTime();
+            while ((new Date()).getTime() - start < delay) {
+                continue;
+            }
         }
 
         function uploadFile(file) {
