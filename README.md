@@ -40,8 +40,7 @@ DaiQiang: daiqianghaha@foxmail.com |
   If both python3 and python2 are installed in your PC, please run
      `pip3 install Django`
 
-3. Modify `userdata.conf` in the app directory to configure the username and password.
-Modify  `rootpath.conf` configuration in the app directory to configure your path which you want to manage files with WF file Browser.
+3. Modify `configuration.json`
 4. Run command in shell(Linux) cmd or powershell(windows) to start the server
 `python3 manage.py runserver 0.0.0.0:5210`
 
