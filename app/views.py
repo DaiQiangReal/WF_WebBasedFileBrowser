@@ -35,8 +35,11 @@ def error(req):
 def isAuthenticated(username, password):
     global userdata
     if userdata == None:
-        with open("./app/userdata.conf") as config:
-            userdata = eval(config.read())
+        #with open("./app/userdata.conf") as config:
+        #    userdata = eval(config.read())
+        json_f=open('configuration.json','r')
+        jsonObj=json.load(json_f)
+        userdata={jsonObj["username"]:jsonObj["password"]}
     try:
         if userdata[username] == password:
             return True
@@ -68,11 +71,9 @@ def checkPassword(req):
 @needUserCookies
 def main(req):
     global rootpath
-    try:
-        with open("./app/rootpath.conf") as root:
-            rootpath=root.read()
-    except Exception:
-        pass
+    json_f=open('configuration.json','r')
+    jsonObj=json.load(json_f)
+    rootpath=jsonObj["rootpath"]
     Folder = Utils.Folder(rootpath)
     dataJson = Folder.getFolderJson()
     language=req.COOKIES.get('language')
